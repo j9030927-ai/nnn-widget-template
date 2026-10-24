@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="No Nut November 2026 application and support widget." />
+    <title>No Nut November 2026</title>
+    <style>
+      :root {
+        --bg: #fff;
+        --fg: #1f1b24;
+        --mut: #6b6573;
+        --card: #f4f1f7;
+        --acc: #8a2be2;
+        --acf: #fff;
+        --bd: #ddd6e6;
+        --danger: #c0392b;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        font: 15px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f8f5fb;
+        color: var(--fg);
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .page-shell {
+        width: min(1200px, 100%);
+        min-height: min(90vh, 900px);
+        background: linear-gradient(180deg, #fff 0%, #faf7fc 100%);
+        border: 1px solid rgba(0,0,0,.06);
+        border-radius: 20px;
+        box-shadow: 0 24px 60px rgba(36, 18, 46, 0.12);
+        overflow: hidden;
+        position: relative;
+      }
+
+      @media (max-width: 1024px) {
+        body {
+          padding: 12px;
+        }
+
+        .page-shell {
+          width: 100%;
+          min-height: 100vh;
+          border-radius: 0;
+        }
+      }
+
+      #nnn-root {
+        --bg: #fff;
+        --fg: #1f1b24;
+        --mut: #6b6573;
+        --card: #f4f1f7;
+        --acc: #8a2be2;
+        --acf: #fff;
+        --bd: #ddd6e6;
+        font: 15px/1.45 system-ui, sans-serif;
+        color: var(--fg);
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 99999;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        #nnn-root {
+          --bg: #1c1823;
+          --fg: #f1edf5;
+          --mut: #a79fb2;
+          --card: #2a2433;
+          --bd: #3b3347;
+        }
+      }
+
+      #nnn-root * { box-sizing: border-box; }
+
+      #nnn-btn {
+        background: var(--acc);
+        color: var(--acf);
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 20px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      }
+
+      #nnn-tease {
+        position: absolute;
+        right: 0;
+        bottom: 56px;
+        width: min(250px, calc(100vw - 28px));
+        background: var(--bg);
+        border: 1px solid var(--bd);
+        border-radius: 14px;
+        padding: 10px 28px 10px 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,.12);
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      #nnn-tease b {
+        position: absolute;
+        right: 8px;
+        top: 6px;
+        color: var(--mut);
+      }
+
+      #nnn-box {
+        display: none;
+        flex-direction: column;
+        width: min(380px, calc(100vw - 24px));
+        height: min(580px, calc(100vh - 32px));
+        background: var(--bg);
+        border: 1px solid var(--bd);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      }
+
+      #nnn-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--bd);
+        font-weight: 700;
+      }
+
+      #nnn-head button {
+        background: none;
+        border: 0;
+        color: var(--fg);
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      #nnn-log {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .nnn-m {
+        max-width: 88%;
+        padding: 8px 12px;
+        border-radius: 14px;
+        background: var(--card);
+        white-space: pre-line;
+        word-break: break-word;
+      }
+
+      .nnn-m.me {
+        align-self: flex-end;
+        background: var(--acc);
+        color: var(--acf);
+      }
+
+      .nnn-m a {
+        color: inherit;
+        font-weight: 600;
+      }
+
+      #nnn-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 0 12px 8px;
+      }
+
+      #nnn-chips button {
+        border: 1px solid var(--acc);
+        background: none;
+        color: var(--fg);
+        border-radius: 999px;
+        padding: 4px 11px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      #nnn-form {
+        display: flex;
+        gap: 8px;
+        padding: 10px;
+        border-top: 1px solid var(--bd);
+      }
+
+      #nnn-form input {
+        flex: 1;
+        padding: 9px 13px;
+        border-radius: 999px;
+        border: 1px solid var(--bd);
+        background: var(--bg);
+        color: var(--fg);
+      }
+
+      #nnn-form button,
+      .nnn-go {
+        background: var(--acc);
+        color: var(--acf);
+        border: 0;
+        border-radius: 999px;
+        padding: 9px 16px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      #nnn-proof {
+        display: none;
+        padding: 12px;
+        overflow-y: auto;
+        border-top: 1px solid var(--bd);
+        max-height: 70%;
+      }
+
+      #nnn-proof input,
+      #nnn-proof select {
+        width: 100%;
+        margin: 4px 0;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--bd);
+        background: var(--bg);
+        color: var(--fg);
+      }
+
+      #nnn-proof small {
+        color: var(--mut);
+        display: block;
+        margin-top: 6px;
+      }
+
+      @media (max-width: 480px) {
+        #nnn-root {
+          right: 10px;
+          bottom: 10px;
+        }
+
+        #nnn-box {
+          width: min(100vw - 18px, 380px);
+          height: min(78vh, 580px);
+        }
+
+        #nnn-form {
+          padding: 8px;
+        }
+
+        #nnn-form input {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <div id="nnn-root">
+        <div id="nnn-tease" style="display:none"><b id="nnn-tx">×</b><span id="nnn-tt"></span></div>
+        <button id="nnn-btn">Chat with us</button>
+        <section id="nnn-box" aria-label="NNN chat">
+          <div id="nnn-head"><span>No Nut November</span><button id="nnn-close" aria-label="Close chat">×</button></div>
+          <div id="nnn-log" aria-live="polite"></div>
+          <div id="nnn-chips"></div>
+          <div id="nnn-proof"></div>
+          <form id="nnn-form"><input id="nnn-in" placeholder="Ask me anything…" aria-label="Message"><button type="submit">Send</button></form>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        window.NNN_CONFIG = window.NNN_CONFIG || {
+          formUrl: 'https://form.fillout.com/t/vQYGmm4XNrus',
+          proofApiUrl: ''
+        };
+
+        var C = window.NNN_CONFIG;
+        var $ = function (id) { return document.getElementById(id); };
+
+        var DEADLINE = Date.UTC(2026, 10, 1, 16, 0);
+        var GRACE = Date.UTC(2026, 10, 4, 16, 0);
+        var OPEN = Date.UTC(2026, 9, 22, 7, 0);
+
+        var DL = 'The initial tribute is due by Sunday, Nov 1, 2026 at 8:00 AM Pacific. A 3-day grace period runs through Wednesday, Nov 4 at 8:00 AM Pacific. (Daylight saving ends early Nov 1, so that’s standard time.) The grace period only applies to eligible deadlines. It doesn’t automatically cancel your payment responsibility or change your arrangement.';
+        var CONTACT = 'You can reach Goddess Jade directly:\n• FetLife: Goddessjadexoxo\n• Telegram: dripping.mami\n• Snapchat: jad3ispretty\nInclude your name or application details and what you need.';
+        var LINKS = [
+          ['Cash App', 'https://cash.app/$drippinmami18'],
+          ['Venmo', 'https://venmo.com/u/princessJade_'],
+          ['PayPal', 'https://www.paypal.com/ncp/payment/TNJHPSLJ6HYU4'],
+          ['YouPay', 'https://youpay.me/GoodessJade462'],
+          ['Throne wishlist', 'https://throne.com/princessjade24']
+        ];
+        var NODECIDE = 'I can explain the published rules, but I can’t approve exceptions, change terms, confirm acceptance or payments, or decide anything for Goddess Jade. Those go to her directly.';
+
+        /*QA-START*/
+        var QA = [
+          ["Not sure what to expect?", "Review the requirements, ask the chatbot to explain them, and contact Goddess Jade if still unclear before submitting."],
+          ["What does \"under Goddess Jade's direction\" mean?", "Agreeing to the program's expectations and responsibilities, communicating honestly, and respecting the rules and boundaries. Understand what you agree to before committing."],
+          ["Do I need previous experience?", "Be honest about experience. Do not claim experience you lack. If unsure whether yours meets a requirement, ask Goddess Jade."],
+          ["I'm just curious, I want to find out what it's like.", "That's completely fine. You don't need to know everything before applying. The application and chatbot help you understand the expectations, responsibilities and commitments. Ask questions, learn what participation involves, and decide whether you genuinely want it. Curiosity still means understanding the financial and commitment expectations."],
+          ["Unsure I can stay committed all month?", "Consider your schedule and circumstances honestly, and don't promise what you're not confident you can fulfill."],
+          ["Can I have personal goals?", "Yes. Be clear about them and make sure your expectations match the program's stated requirements."],
+          ["My expectations differ from what's offered.", "Ask before applying. Don't assume unstated activities, services or arrangements are included."],
+          ["Does applying guarantee acceptance?", "No. Goddess Jade reviews every application. Participation is confirmed only after approval AND the initial tribute is received and verified."],
+          ["I changed my mind after applying.", "Contact Goddess Jade and explain. Outstanding obligations don't automatically disappear."],
+          ["Can the chatbot say if I'm ready?", "No. It explains expectations; you assess your own readiness."],
+          ["What if I can no longer maintain my tribute amount?", "Contact Goddess Jade as soon as possible. Any change needs her approval, and the existing arrangement stays in effect until a change is confirmed."],
+          ["What does \"What amount can you comfortably commit\" mean?", "The TOTAL you intend to contribute for all of No Nut November 2026, not one installment. Example: $100 as four weekly payments of $25 is a $100 commitment. Enter the full amount."],
+          ["Can I request payment dates that match my payday?", "Yes, you may propose them and include your preferred dates when discussing with Goddess Jade. They're not approved until she confirms."],
+          ["Are extensions or alternative arrangements guaranteed?", "No, they're case by case. Explain your circumstances and the adjustment you want, and she decides. Any change must be approved before it takes effect."],
+          ["Does Goddess Jade accept Apple Pay?", "Yes, Apple Pay is accepted. Contact her for payment instructions."],
+          ["What if there's an emergency or unexpected expense?", "Notify Goddess Jade as soon as reasonably possible with the circumstances and the adjustment you're asking for. It doesn't automatically change your terms."],
+          ["Will asking questions or explaining my situation disqualify me?", "No."],
+          ["What if I miss a payment deadline?", "Contact Goddess Jade as soon as possible: explain the missed payment, the amount due and when you'll pay. A missed deadline isn't automatically excused; grace-period rules and any approved arrangement decide next steps."],
+          ["Does the 3-day grace period mean I can always pay three days late?", "No. Grace applies only to eligible deadlines. It doesn't extend every deadline or authorize a different schedule. If you're unsure, ask before relying on it."],
+          ["How do I decide my budget and payment frequency?", "Pick your total first, then a frequency that fits your budget. Example: $120 as four weekly payments of $30, if accepted. Make sure the total and frequency reflect your real commitment."],
+          ["What if I'm unsure how much I can afford?", "Review your income, essential expenses and existing obligations. Choose what you can realistically maintain."],
+          ["Can I change my payment method after submitting?", "Contact Goddess Jade naming your current and preferred method. It's not approved until she confirms."],
+          ["Can I contribute only $20 for the whole month?", "Yes. $20 may be your total for the month. It isn't automatically a weekly minimum. State your intended total and arrangement clearly."],
+          ["Is there a maximum tribute?", "No. Propose a total that reflects your real commitment (a total, not one installment, unless the form asks for the installment)."],
+          ["Should I commit more to improve my chances of acceptance?", "No. A higher amount doesn't guarantee acceptance. Propose what you truly can."],
+          ["Can I pay a lower amount now and the rest later?", "A partial payment doesn't change your agreed amount or schedule. Contact Goddess Jade with what you can pay and when you'll pay the rest. Revised arrangements need her approval."],
+          ["What if I picked a payment frequency I can't follow?", "Contact Goddess Jade as soon as you foresee difficulty and propose an alternative. The existing arrangement stays until she approves a change."],
+          ["Can I withdraw, quit or cancel after submitting?", "Contact Goddess Jade to request withdrawal. Withdrawing doesn't automatically decide refunds or resolve an existing commitment."],
+          ["Can I use someone else's payment account? Can a friend pay for me?", "Contact Goddess Jade BEFORE doing so. She'll say whether it's acceptable and what's needed to identify the transaction."],
+          ["What should I include when contacting her about a payment issue?", "The amount, date, payment app, transaction reference if you have one, a clear explanation, and a receipt or screenshot if appropriate. Never send passwords, login credentials or full card details."],
+          ["What if I don't understand my payment arrangement?", "Review your total, installments, frequency and due dates. If anything is unclear or inconsistent, ask Goddess Jade rather than assuming."],
+          ["What if my application has incorrect information?", "Contact Goddess Jade with what's wrong and the correct details, then wait for her to confirm the correction."],
+          ["What if my question isn't in the FAQ?", "Contact Goddess Jade directly. The chatbot can't create policy."],
+          ["When is my participation confirmed?", "Only after Goddess Jade approves your application and your initial tribute is received and verified. Submitting or starting a payment isn't confirmation."],
+          ["I paid but I'm not confirmed yet.", "Give Goddess Jade your transaction details or receipt. You stay unconfirmed until approval and verification are complete."],
+          ["Which payment methods can I use?", "The ones on the payment page: Cash App, Venmo, PayPal, YouPay and Throne wishlist. Apple Pay is accepted through Goddess Jade. Use official links only. If your method isn't listed, contact her first and don't assume it's accepted."],
+          ["Does clicking a payment link mean I paid?", "No. The payment must actually complete, and Goddess Jade must verify the funds arrived."],
+          ["Do I have to pay now or can I pay later?", "You may submit the application first, but the initial tribute is still due by the deadline and you aren't confirmed until approval plus verification. Don't wait until the last minute."],
+          ["What if my payment is pending, failed, delayed or reversed?", "Check the status with your payment provider and tell Goddess Jade with transaction details. These don't count as verified tribute and must never be represented as completed."],
+          ["What if I sent the wrong amount or paid twice?", "Contact Goddess Jade with the transaction details. Don't assume it satisfies the requirement or will be refunded automatically."],
+          ["Does a payment screenshot confirm my payment?", "No. A screenshot is supporting documentation only. Goddess Jade verifies the funds herself, and a screenshot alone may not be enough."],
+          ["What if my receipt doesn't show my username, or I have no receipt?", "Submit what you have and contact Goddess Jade so it can be connected to your application. Check your provider's transaction history, and don't submit an unrelated screenshot."],
+          ["What if I can't upload my screenshot?", "Save it as a supported image file and try again. If it still fails, contact Goddess Jade before the deadline."],
+          ["Can I use the same payment proof more than once?", "Use proof that matches the specific payment being reviewed. A separate payment needs its own confirmation."],
+          ["What if she can't verify my payment from the screenshot?", "Provide any additional details she asks for, honestly."],
+          ["Does uploading proof approve my application?", "No. Payment verification and application approval are separate. Confirmation needs both."],
+          ["Can I send payment proof after submitting the application?", "Yes, through the payment proof section."],
+          ["What if I paid with a different method than I selected?", "Contact Goddess Jade with the transaction details. Don't assume it's accepted."],
+          ["What do personal limits and boundaries mean?", "What you're comfortable with, what you won't do, and any restrictions that need to be understood before participating. Be honest and specific."],
+          ["What if I'm unsure how to word a boundary?", "Use your own words. No special terminology is needed."],
+          ["What's the difference between soft limits and hard limits?", "Soft limits are things you may be open to under clear, agreed conditions. Hard limits are things you don't consent to. List both. A soft limit is never automatic permission, and you can still say no or change your mind."],
+          ["What if I don't have a safeword? How do I pick or choose one?", "Choose one before activities where it may be needed: easy to remember and unlikely in normal conversation. Make sure Goddess Jade knows it and that it means stop. If you can't speak, agree on another signal beforehand."],
+          ["What is a safeword and do I need one?", "An agreed word or signal meaning stop or pause. Set up a clear way to communicate your limits before proceeding."],
+          ["What if I don't have any particular limits?", "You may say you have none to disclose, but make sure you understand the expectations."],
+          ["What if my boundaries change after I submit?", "Tell Goddess Jade as soon as possible. Submitting doesn't mean ignoring a change in your comfort, consent or safety needs."],
+          ["Do I have to share my full medical history?", "No. Share only health information relevant to safe participation, including limitations that could affect it."],
+          ["What if I have a medical concern about the chastity device or can't safely keep wearing it?", "Explain honestly. If you have pain, numbness, swelling, skin discoloration or another potentially serious symptom, put your health first, remove the device if it's safe to do so, and get medical care. I can't give a medical assessment. Never keep wearing a device causing a serious problem to meet a requirement, and tell Goddess Jade."],
+          ["What if I'm comfortable with some activities but not others?", "Identify both clearly. Agreeing to one doesn't mean agreeing to all."],
+          ["What if I'm uncomfortable with an instruction later?", "Say so clearly. You're never required to continue something that violates your boundaries or consent."],
+          ["What if I'm embarrassed to disclose a boundary?", "You shouldn't agree to something just because you're embarrassed to say no. Share what's needed to set clear expectations."],
+          ["Do I have to share private photos or videos?", "Don't assume so unless the official rules explicitly say. Understand any documentation in advance, and raise privacy or consent concerns before sharing anything sensitive."],
+          ["What if I have privacy concerns about my information?", "Provide only relevant information. Never share passwords, payment account credentials or unnecessary sensitive data in the chat."],
+          ["What if my work, sleep or responsibilities affect participation?", "Explain the limits up front. Don't promise availability that conflicts with essential responsibilities or your well-being."],
+          ["What if I have financial boundaries beyond the tribute?", "Don't accept extra financial commitments under pressure. Use the official tribute rules for payment questions."],
+          ["Will having a lot of boundaries disqualify me?", "Not by themselves. The chatbot can't guarantee an approval decision."],
+          ["What if I'm not sure whether something crosses a boundary?", "Ask for clarification before agreeing. Don't assume something is acceptable just because it wasn't mentioned."],
+          ["Can the chatbot decide whether an activity is allowed?", "It can explain published rules only. It can't create rules, override your boundaries or decide for Goddess Jade. Ask her about anything unaddressed."],
+          ["What does the age and accuracy statement mean?", "You must be 18 or older, and your information must be truthful and accurate. Report errors you find later."],
+          ["Am I registered once I submit?", "No. Approval plus a verified initial tribute is required."],
+          ["What does the communication and conduct statement require?", "Be respectful, respond within reasonable agreed time frames, complete agreed check-ins, and tell Goddess Jade if circumstances affect participation. You're not required to be available around the clock."],
+          ["What if I miss a check-in?", "Say so as soon as reasonably possible, and give notice when practical."],
+          ["What does following the rules and respecting boundaries mean?", "Follow the program rules and respect everyone's boundaries. Rules never override consent, safety or law. If a rule seems to conflict with a boundary, ask first."],
+          ["Can I stop an activity after agreeing to it?", "Yes. Consent is ongoing and can be withdrawn at any time. A safeword or safety signal must be respected."],
+          ["What if I have a safety concern but worry it will affect my participation?", "Say so honestly. Don't ignore pain, medical issues or unsafe situations to avoid disappointing anyone. In a medical emergency, get medical help."],
+          ["What should I know about the payment terms before agreeing?", "Understand the tribute amount, schedule and any cancellation or refund terms first. The chatbot can't create terms or guarantee a refund or exception. Terms remain subject to applicable law."],
+          ["What if my finances change after I agree?", "Tell Goddess Jade. Nothing changes automatically, and alternatives need her confirmation."],
+          ["What does the privacy and confidentiality statement mean?", "Respect the privacy of Goddess Jade and other participants. Don't share private messages or personal information without permission, except to address a safety concern or when required by law. You can still seek help if you feel unsafe."],
+          ["Does checking the boxes guarantee acceptance?", "No. Goddess Jade still reviews and approves, and the tribute must be verified."],
+          ["What if I don't understand one of the required statements?", "Ask before ticking its box. Don't tick boxes just to finish. If I can't clarify it, ask Goddess Jade."],
+          ["What does the final acknowledgment mean?", "It confirms you read and understood the terms, had the chance to ask questions, and agree to the conditions. It doesn't replace approval or payment verification."],
+          ["What if I can't meet the initial deadline?", "Contact Goddess Jade. Extensions aren't guaranteed, and the deadline doesn't change unless she confirms."],
+          ["Is there anything I haven't disclosed that could affect my participation?", "Be honest about anything affecting participation or payment. If you left out something important, tell Goddess Jade as soon as possible."],
+          ["What if I can't meet a payment, check-in or responsibility?", "Tell Goddess Jade right away, explain what happened and give a realistic update. Don't claim you did something you didn't. Changes need approval before you assume terms changed."],
+          ["What happens if I'm dishonest or give false payment information?", "It can lead to disqualification or removal. Honest mistakes should be corrected promptly."],
+          ["Am I prepared to honor my payment arrangement and speak up about financial problems?", "Propose something affordable and tell Goddess Jade promptly if things change. Alternatives aren't guaranteed and need approval."],
+          ["Do I agree to give truthful information throughout?", "Yes: answer honestly, give accurate payment info, and report changes or errors rather than leaving inaccuracies."],
+          ["What if an answer no longer reflects my situation?", "Tell Goddess Jade what changed. Don't conceal changes that affect your ability to participate."],
+          ["What if I agree to an arrangement I can't afford just to get accepted?", "Don't. Choose based on your real finances."],
+          ["What if my payment fails, is reversed or never arrives?", "Check with your provider and tell Goddess Jade with accurate details. Never present a failed, reversed, pending or incomplete transaction as completed."],
+          ["What if I'm tempted to make up an excuse?", "Explain what actually happened and take responsibility."],
+          ["What if I know I'll miss a deadline?", "Say so as early as possible, explain, and propose a realistic alternative. It isn't accepted until Goddess Jade confirms."],
+          ["What if I apply with no intention of following the requirements?", "Don't apply under false pretenses. Raise concerns and ask first."],
+          ["What if I'm no longer interested after being accepted?", "Tell Goddess Jade directly and don't disappear. Withdrawing doesn't automatically cancel obligations or entitle you to a refund."],
+          ["What if I'm asked for proof of a payment or responsibility?", "Provide genuine, accurate proof. Never alter screenshots, fabricate receipts or claim something is done when it isn't. If you can't, explain honestly."],
+          ["What if I disagree with a requirement I already agreed to?", "Raise it with Goddess Jade directly. Don't misrepresent it or secretly disregard it."],
+          ["What if I think another participant is being dishonest?", "You may tell Goddess Jade what you actually know. Don't make unsupported accusations or spread private information."],
+          ["Will the chatbot approve me? Can the chatbot tell me if I'll be approved?", "No. Only Goddess Jade decides."],
+          ["What if I made a mistake on my application?", "Correct it before submitting if you can. After submitting, contact Goddess Jade."],
+          ["Can I ask Goddess Jade questions after submitting?", "Yes, contact her directly."],
+          ["What happens after I submit my application?", "Goddess Jade reviews it. Submitting doesn't confirm acceptance. Follow the instructions on approval and payment verification."],
+          ["What if I'm unsure whether I'm ready?", "Review the requirements, payment, boundaries and expectations first. It's better to ask than to commit to something you can't fulfill."],
+          ["Can the chatbot change the rules or make an exception for me?", "No. Requests must be approved by Goddess Jade directly."]
+        ];
+
+        QA.push([
+          'When do I have to pay by? When is my initial tribute due? What is the deadline? What is the due date? Is there a grace period?',
+          DL
+        ]);
+        QA.push([
+          'How do I contact Goddess Jade? Who do I message or talk to? FetLife Telegram Snapchat',
+          CONTACT + '\n\nFor payment verification, approvals or exceptions, contact her directly.'
+        ]);
+        QA.push([
+          'Can you approve exceptions, change terms or confirm my payment or acceptance?',
+          NODECIDE
+        ]);
+        QA.push([
+          'Is this legit? Is it safe to pay? How do I avoid scams or fake handles?',
+          'Good instinct. Only pay through the official links I list, and check the name on the payment screen before you send. Put your personal code in the payment note. A screenshot alone never unlocks anything, because Goddess Jade checks every payment against her own payment records.'
+        ]);
+        QA.push([
+          'What is my personal code?',
+          'Say “my code” and I’ll give you a personal code like NNN-7K2QXD. Put it in your payment note so your payment can be matched to you.'
+        ]);
+        QA.push([
+          'How much is the minimum tribute? How much does it cost?',
+          'The minimum tribute is $20, with no maximum, and $20 can be your total for the whole month. Enter your total intended commitment, not one installment.'
+        ]);
+        QA.push([
+          'Do I get a copy of the agreement by email?',
+          'Everyone who finishes the form gets a copy of the agreement emailed to them, whether or not they pay today.'
+        ]);
+        QA.push([
+          'Do I need to be 18 or older? What is the age requirement?',
+          'You must be at least 18 to apply, and you’ll confirm that in Section 1. The challenge is restricted to adults.'
+        ]);
+        QA.push([
+          'What is Section 1 contact info?',
+          'Section 1 collects contact details so your sign-up can be identified and your access link delivered, and so you can be reached about updates. Make sure your preferred contact method is active. You must be at least 18 to take part.'
+        ]);
+        QA.push([
+          'What is Section 2 interest and commitment? Is it optional?',
+          'Section 2 (Interest & Commitment) is optional. It’s a chance to share what draws you in, your goals and your expectations. Answer honestly if you do fill it in.'
+        ]);
+
+        var STOP = {};
+        'dont doesnt didnt ill ive im cant wont isnt a an the i my me is are do does can could should would will what if how when where who why to of for in on at it be or and with about that this you your am was were have has had not no so as by from just there their they them then than also any some'.split(' ').forEach(function (w) { STOP[w] = 1; });
+
+        function stem(w) {
+          return w.length > 4 ? w.replace(/(ing|ed|es|s)$/, '') : w;
+        }
+
+        function toks(s) {
+          return s.toLowerCase()
+            .replace(/twenty/g, '20')
+            .replace(/['’$]/g, '')
+            .replace(/[^a-z0-9 ]+/g, ' ')
+            .split(/\s+/)
+            .filter(function (w) { return w && !STOP[w]; })
+            .map(stem);
+        }
+
+        var QI = QA.map(function (e) {
+          var q = toks(e[0]);
+          var a = toks(e[1]);
+          return { q: q, qs: new Set(q), as: new Set(a), raw: e[0].toLowerCase() };
+        });
+
+        var DF = {};
+        QI.forEach(function (e) {
+          e.qs.forEach(function (t) {
+            DF[t] = (DF[t] || 0) + 1;
+          });
+        });
+
+        function idf(t) {
+          return Math.log((QA.length + 1) / ((DF[t] || 0) + 0.5));
+        }
+
+        function nnnFind(text) {
+          var t = toks(text);
+          var w = text.toLowerCase().trim().split(/\s+/).slice(0, 2).join(' ');
+          var best = -1;
+          var bs = 0;
+          if (!t.length) return null;
+
+          QI.forEach(function (e, i) {
+            var s = 0;
+            var m = 0;
+            var seen = {};
+            t.forEach(function (x) {
+              if (seen[x]) return;
+              seen[x] = 1;
+              if (e.qs.has(x)) {
+                s += idf(x);
+                m++;
+              } else if (e.as.has(x)) {
+                s += idf(x) * 0.15;
+              }
+            });
+            s = s / Math.sqrt(0.5 + e.q.length * 0.35) * (0.6 + 0.4 * m / Math.max(1, e.q.length));
+            if (s > 0 && e.raw.indexOf(w) === 0) s += 1.2;
+            if (s > bs) {
+              bs = s;
+              best = i;
+            }
+          });
+
+          return bs >= 1.0 ? QA[best][1] : null;
+        }
+        /*QA-END*/
+
+        var log = $('nnn-log');
+        var chips = $('nnn-chips');
+        var box = $('nnn-box');
+        var btn = $('nnn-btn');
+        var tease = $('nnn-tease');
+        var started = false;
+        var shown = false;
+
+        function pick(a) {
+          return a[Math.floor(Math.random() * a.length)];
+        }
+
+        function add(t, me, html) {
+          var d = document.createElement('div');
+          d.className = 'nnn-m' + (me ? ' me' : '');
+          if (html) {
+            d.innerHTML = t;
+          } else {
+            d.textContent = t;
+          }
+          log.appendChild(d);
+          log.scrollTop = log.scrollHeight;
+          return d;
+        }
+
+        function say(t, html) {
+          return new Promise(function (resolve) {
+            var d = add('…');
+            setTimeout(function () {
+              d.remove();
+              add(t, 0, html);
+              resolve();
+            }, Math.min(1500, 400 + t.length * 10));
+          });
+        }
+
+        function setChips(a) {
+          chips.innerHTML = '';
+          a.forEach(function (c) {
+            var b = document.createElement('button');
+            b.textContent = c;
+            b.type = 'button';
+            b.onclick = function () { ask(c); };
+            chips.appendChild(b);
+          });
+        }
+
+        function formLink() {
+          return '<a href="' + C.formUrl + '" target="_blank" rel="noopener">Start the form</a>';
+        }
+
+        function open() {
+          box.style.display = 'flex';
+          btn.style.display = 'none';
+          tease.style.display = 'none';
+          $('nnn-in').focus();
+
+          if (started) return;
+          started = true;
+
+          say(pick(['Hey you 👋', 'Hi there!', 'Well hello 😏']))
+            .then(function () { return say('I’m here to walk you through this. Honestly, the best first move is the form. It takes about a minute a page, and I’ll be right here if you get stuck.'); })
+            .then(function () { return say(formLink(), 1); })
+            .then(function () { setChips(['What’s the deadline?', 'How much is the tribute?', 'Is this legit?', 'Pay & send proof', 'Contact Jade']); });
+        }
+
+        function code() {
+          var k = 'nnn_code';
+          var c;
+          try {
+            c = localStorage.getItem(k);
+          } catch (e) {}
+
+          if (!c) {
+            var A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            var r = new Uint8Array(8);
+            crypto.getRandomValues(r);
+            c = 'NNN-' + [].map.call(r, function (x) { return A[x % 32]; }).join('');
+            try {
+              localStorage.setItem(k, c);
+            } catch (e) {}
+          }
+          return c;
+        }
+
+        function payFlow() {
+          var c = code();
+          say('Here’s your personal code: ' + c + '\nPut it in the payment note. Only pay through these official links, and check the name on the payment screen before you send:')
+            .then(function () {
+              say(LINKS.map(function (l) { return '<a href="' + l[1] + '" target="_blank" rel="noopener">' + l[0] + '</a>'; }).join('<br>'), 1);
+            })
+            .then(function () {
+              return say('YouPay and Throne often have no note field. That’s fine, your proof gets matched by amount, time and receipt ID. Once you’ve paid, tap “I paid” and send the details.');
+            })
+            .then(function () { setChips(['I paid', 'What’s the deadline?', 'Contact Jade']); });
+        }
+
+        function proofForm() {
+          var p = $('nnn-proof');
+          p.style.display = 'block';
+          p.innerHTML = '<select id="p1">' + LINKS.map(function (l) { return '<option>' + l[0] + '</option>'; }).join('') + '</select><input id="p2" placeholder="Name or @handle you paid from"><input id="p3" placeholder="Amount sent" inputmode="decimal"><small>When you sent it (your local time)</small><input id="p4" type="datetime-local"><input id="p5" placeholder="Transaction / receipt ID (or none)"><small>Screenshot (crop out card numbers)</small><input id="p6" type="file" accept="image/*,.pdf"><button class="nnn-go" id="p7" type="button">Send</button> <button class="nnn-go" id="p8" type="button" style="background:none;color:var(--fg);border:1px solid var(--bd)">Cancel</button><div id="p9" style="color:var(--danger);margin-top:6px"></div>';
+
+          $('p8').onclick = function () { p.style.display = 'none'; };
+          $('p7').onclick = function () {
+            var e = $('p9');
+            var t = new Date($('p4').value).getTime();
+            var amt = parseFloat($('p3').value);
+            var now = Date.now();
+
+            if (!$('p2').value.trim() || !amt || !$('p4').value) return e.textContent = 'Please fill in the app, who you paid from, amount and time.';
+            if (isNaN(t) || t > now + 300000) return e.textContent = 'That time is in the future. Please check it.';
+            if (t < OPEN) return e.textContent = 'That’s earlier than this payment window opened. Please check the date.';
+            if (now > GRACE) return e.textContent = 'The payment window has closed. Please contact Goddess Jade directly.';
+
+            var tm = t <= DEADLINE ? 'On time' : t <= GRACE ? 'Grace period' : 'Late';
+            var d = {
+              code: code(),
+              app: $('p1').value,
+              paidFrom: $('p2').value.trim(),
+              amount: amt,
+              sentAt: new Date(t).toISOString(),
+              receiptId: $('p5').value.trim() || 'none',
+              timing: tm,
+              hasFile: !!$('p6').files[0]
+            };
+
+            p.style.display = 'none';
+
+            var txt = 'NNN PAYMENT\nCode: ' + d.code + '\nApp: ' + d.app + '\nPaid from: ' + d.paidFrom + '\nAmount: $' + d.amount + '\nSent: ' + new Date(t).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }) + ' PT (' + tm + ')\nReceipt ID: ' + d.receiptId;
+
+            if (C.proofApiUrl) {
+              fetch(C.proofApiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(d)
+              }).then(function () {
+                say('Got it, thank you! Goddess Jade will match it against her own payment records. You’ll hear from her once it’s verified. Remember, sending proof doesn’t confirm you by itself.');
+              }).catch(function () {
+                say('That didn’t go through. Please send these details to Goddess Jade directly:\n\n' + txt + '\n\n' + CONTACT);
+              });
+            } else {
+              try { navigator.clipboard.writeText(txt); } catch (x) {}
+              say('Thanks! Last step: send this to Goddess Jade along with your screenshot. I copied it for you:\n\n' + txt + '\n\n' + CONTACT + '\n\nShe checks it against her own payment records, and she’ll share your access link once it’s verified. Sending this doesn’t confirm you by itself.');
+            }
+          };
+        }
+
+        function ask(q) {
+          add(q, 1);
+          chips.innerHTML = '';
+          var l = q.toLowerCase();
+
+          if (/^(i paid|send proof|proof)$/.test(l) || /i (just )?paid/.test(l)) return proofForm();
+          if (/my code|pay & send|pay and send|how do i pay|how to pay|payment link|where.*pay/.test(l)) return payFlow();
+          if (/start|apply|begin|fill/.test(l) && /form|apply|start|begin/.test(l)) return say('Love that. Here you go:').then(function () { return say(formLink(), 1); });
+
+          var hit = nnnFind(q);
+          if (hit) return say(hit).then(function () { setChips(['Start the form', 'What’s the deadline?', 'Contact Jade']); });
+
+          say(pick(['Hmm, that one’s not in what I’ve got.\n\n', 'Good question, but I don’t have a reliable answer for that.\n\n']) + 'I can only explain the published rules, so for anything personal, ask Goddess Jade directly rather than guessing.\n\n' + CONTACT)
+            .then(function () { setChips(['Start the form', 'What’s the deadline?']); });
+        }
+
+        btn.onclick = open;
+        $('nnn-close').onclick = function () {
+          box.style.display = 'none';
+          btn.style.display = '';
+          $('nnn-proof').style.display = 'none';
+        };
+
+        $('nnn-form').onsubmit = function (e) {
+          e.preventDefault();
+          var v = $('nnn-in').value.trim();
+          if (v) {
+            $('nnn-in').value = '';
+            ask(v);
+          }
+        };
+
+        var T = [
+          'Still just looking? 👀 Peek at page one. Nothing is sent until the very end.',
+          'Curious what you’d be signing up for? Starting is free and takes about a minute a page.',
+          'Psst… people who start usually finish. Want me to walk you through it?'
+        ];
+
+        setTimeout(function () {
+          if (box.style.display !== 'flex' && !shown) {
+            shown = true;
+            $('nnn-tt').textContent = pick(T);
+            tease.style.display = 'block';
+          }
+        }, 9000);
+
+        tease.onclick = function (e) {
+          if (e.target.id === 'nnn-tx') {
+            tease.style.display = 'none';
+          } else {
+            open();
+          }
+        };
+      })();
+    </script>
+  </body>
+</html>
